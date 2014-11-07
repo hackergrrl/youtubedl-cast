@@ -2,6 +2,7 @@ var routes = require('routes');
 var http = require('http');
 var youtubedl = require('youtube-dl');
 var mplayer = require('node-mplayer');
+var fs = require('fs');
 
 var router = routes();
 router.addRoute("/play/:url", playUrl);
@@ -19,11 +20,12 @@ http.createServer(function(req, res) {
 
 function playUrl(req, res, params, splats) {
   var video = youtubedl(params.url, ['--max-quality=18'], {});
-  process.stdout.pipe(process.stdin);
-  video.pipe(process.stdout);
-  var player = new mplayer("-");
-  player.play();
-  res.end();
+  video.pipe(fs.createWriteStream('/tmp/video'));
+  video.on('end', function() {
+    var player = new mplayer('/tmp/video');
+    player.play();
+    res.end();
+  });
 }
 
 function fourOhFour(req, res, params, splats) {
