@@ -1,9 +1,11 @@
 var routes = require('routes');
 var http = require('http');
+var youtubedl = require('youtube-dl');
+var mplayer = require('node-mplayer');
 
 var router = routes();
 router.addRoute("/play/:url", playUrl);
-router.addRoute("/*", root);
+router.addRoute("/*", fourOhFour);
 
 http.createServer(function(req, res) {
   console.dir(req.url);
@@ -16,11 +18,15 @@ http.createServer(function(req, res) {
 
 
 function playUrl(req, res, params, splats) {
-  console.log(params);
+  var video = youtubedl(params.url, ['--max-quality=18'], {});
+  process.stdout.pipe(process.stdin);
+  video.pipe(process.stdout);
+  var player = new mplayer("-");
+  player.play();
   res.end();
 }
 
-function root(req, res, params, splats) {
+function fourOhFour(req, res, params, splats) {
   res.writeHead(404, "Totally not found");
   res.end();
 }

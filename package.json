@@ -11,6 +11,7 @@
   "license": "BSD",
   "dependencies": {
     "routes": "~1.2.0",
-    "youtube-dl": "~1.5.16"
+    "youtube-dl": "~1.5.16",
+    "node-mplayer": "0.0.3"
   }
 }
