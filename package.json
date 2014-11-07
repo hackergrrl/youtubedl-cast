@@ -1,0 +1,16 @@
+{
+  "name": "youtube-dl_2_pi",
+  "version": "0.0.1",
+  "description": "HTTP interface to youtube-dl + your media player.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Stephen Whitmore <sww@eight45.net>",
+  "license": "BSD",
+  "dependencies": {
+    "routes": "~1.2.0",
+    "youtube-dl": "~1.5.16"
+  }
+}
