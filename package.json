@@ -10,8 +10,10 @@
   "author": "Stephen Whitmore <sww@eight45.net>",
   "license": "BSD",
   "dependencies": {
+    "mkfifo": "0.0.1",
+    "node-mplayer": "0.0.3",
     "routes": "~1.2.0",
-    "youtube-dl": "~1.5.16",
-    "node-mplayer": "0.0.3"
+    "tmp": "0.0.24",
+    "youtube-dl": "~1.5.16"
   }
 }
