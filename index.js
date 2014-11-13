@@ -10,12 +10,14 @@ var router = routes();
 router.addRoute("/play/:url", playUrl);
 router.addRoute("/*", fourOhFour);
 
+var port = (process.argv.length > 2) ? process.argv[2] : 8000;
+
 http.createServer(function(req, res) {
   var route = router.match(req.url);
   if (route) {
     route.fn.apply(null, [req, res, route.params, route.splats]);
   }
-}).listen(8000);
+}).listen(port);
 
 
 function playUrl(req, res, params, splats) {
