@@ -27,7 +27,7 @@ function playUrl(req, res, params, splats) {
     if (err) {
       throw err;
       res.writeHead(500, "tmpName messed up");
-      res.write(err);
+      res.write(err.toString());
       res.end();
     }
 
@@ -35,7 +35,7 @@ function playUrl(req, res, params, splats) {
       mkfifo(fifoName, 0755);
     } catch (e) {
       res.writeHead(500, "mkfifo messed up");
-      res.write(e);
+      res.write(e.toString());
       res.end();
     }
     console.error("Created fifo: " + fifoName);
@@ -51,12 +51,13 @@ function playUrl(req, res, params, splats) {
     fifo.on('error', function(err) {
       if (err.code === 'EPIPE') {
         // perfectly normal; the player was likely killed
+        console.error('player killed');
         res.end();
       } else {
         console.error("fifo error");
         console.error(err);
         res.writeHead(500, 'fifo error');
-        res.write(err);
+        res.write(err.toString());
         res.end();
       }
     });
@@ -64,14 +65,14 @@ function playUrl(req, res, params, splats) {
       console.error("video error");
       console.error(err);
       res.writeHead(500, 'video error');
-      res.write(err);
+      res.write(err.toString());
       res.end();
     });
     player.on('error', function(err) {
       console.error("player error");
       console.error(err);
       res.writeHead(500, 'player error');
-      res.write(err);
+      res.write(err.toString());
       res.end();
     });
     player.on('end', function() {
