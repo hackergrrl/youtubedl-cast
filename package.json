@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "",
+  "repository": "https://github.com/noffle/youtubedl-media-server.git",
+  "homepage": "https://github.com/noffle/youtubedl-media-server",
+  "bugs": "https://github.com/noffle/youtubedl-media-server/issues",
   "author": "Stephen Whitmore",
   "license": "BSD",
   "dependencies": {
