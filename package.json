@@ -1,13 +1,14 @@
 {
-  "name": "youtube-dl_2_pi",
+  "name": "youtubedl-media-server",
   "version": "0.0.1",
-  "description": "HTTP interface to youtube-dl + your media player.",
+  "description": "HTTP server that takes URLs and plays them using youtube-dl + your media player.",
   "main": "index.js",
+  "bin": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": "",
-  "author": "Stephen Whitmore <sww@eight45.net>",
+  "author": "Stephen Whitmore",
   "license": "BSD",
   "dependencies": {
     "mkfifo": "0.0.1",
