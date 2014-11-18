@@ -1,35 +1,34 @@
 ## What is this?
-**youtubedl-media-server** is a lightweight front-end over [youtube-dl]() and
-your favourite media player (currently [mplayer]() or [omxplayer]()). It runs
-as an HTTP server that exposes a small set of useful commands to initiate and
-control playback.
+Cast tabs with videos to a server hooked up a TV using bookmarklets!
+
+## Wha? Cast videos to a server?
+Install **youtubedl-cast** to your handy [Raspberry Pi]() or server hooked up
+to your TV and send videos to it from any [youtube-dl compatible page]().
+
+## Using bookmarklets?
+Proprietary vendor plugin systems like Chrome extensions and Firefox add-ons
+are lame and non-portable: [embed javascript in bookmarklets]() for easy,
+browser agnostic functionality! One click to play the current tab's video on
+your TV!
 
 ## Installation
 ```
-$ npm install -g youtubedl-media-player
+$ npm install -g youtubedl-cast
 
-$ youtubedl-media-player
+$ youtubedl-cast
 ```
 
-## Send the current tab's video to the server
-The use case that **youtubedl-media-server** was written to fulfill was to make
-it easy to initiate playback of a video on [any website supported by
-youtube-dl]() from your current device to a device hooked up a larger display,
-like, say, a [Raspberry Pi]() hooked up a TV.
-
-Assuming this also resembles your use case, you can use the following
-[bookmarklet]() to play the current tab's video on the device running
-**youtubedl-media-server**:
+## Cast videos: bookmarklet
+Paste the following bookmarklet verbatim as a new bookmark in your browser of choice:
 
 ```
 javascript:var SERVER="http://localhost:8000";var request = new XMLHttpRequest(); var url = encodeURIComponent(location.href); request.open("GET", SERVER+/play/"+url, true); request.onreadystatechange = function() { var done = 4, ok = 200; if (request.readyState == done && request.status == ok) { if (request.responseText) { alert(request.responseText); } } }; request.send(null);
 ```
 
-Simply replace the value of `SERVER` with the IP:port tuple of your choosing.
+Don't forget to replace the value of `SERVER` with the IP:port tuple of your choosing.
 
 ## HTTP API
-For a less streamlined experience, the server exposes the following set of HTTP
-routes:
+**youtubedl-cast** exposes a simple HTTP interface:
 
 `/play/:url`plays the media at the provided `:url` (url-encoded)
 
