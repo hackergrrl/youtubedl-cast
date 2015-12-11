@@ -58,7 +58,7 @@ function playUrl(req, res, params, splats) {
 
     // Start downloading the video and piping it into the FIFO.
     console.error("Starting to download " + params.url);
-    var video = youtubedl(params.url, ['--max-quality=18'], {});
+    var video = youtubedl(params.url, ['-f', 'best'], {});
     video.pipe(fifo);
 
     video.on('info', function(info) {
