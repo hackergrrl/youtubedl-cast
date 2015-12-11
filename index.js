@@ -3,6 +3,7 @@ var http = require('http');
 var https = require('https');
 var mkfifo = require('mkfifo').mkfifoSync;
 var mplayer = require('node-mplayer');
+var omxplayer = require('omx-controller');
 var routes = require('routes');
 var tmp = require('tmp');
 var youtubedl = require('youtube-dl');
@@ -60,20 +61,36 @@ function playUrl(req, res, params, splats) {
     var video = youtubedl(params.url, ['--max-quality=18'], {});
     video.pipe(fifo);
 
-    // Have the player start playing from the FIFO.
-    var player = new mplayer(fifoName);
-    player.play();
-
     video.on('info', function(info) {
       // TODO: store the title somewhere (or something) for future use
       //console.dir(info);
 
       // End the request with success if the video has been retrieved
-      // successfully.
+      // successfully, if it's still around.
       if (!res.finished) {
         res.end();
       }
+
+      // Have the player start playing from the FIFO.
+      // TODO: abstract-media-player?
+      var player = new mplayer(fifoName);
+      // var player = new omxplayer(fifoName);
+      player.play();
+
+      // Bail gracefully on player errors.
+      player.on('error', function(err) {
+        errorResponse(res, err, "player messed up");
+      });
+
+      player.on('end', function() {
+        // TODO: do something meaningful?
+        console.error('player ended')
+      });
     });
+
+    video.on('error', function (err) {
+      console.error('ytdl error', err)
+    })
 
     // Bail gracefully on FIFO errors.
     fifo.on('error', function(err) {
@@ -88,15 +105,6 @@ function playUrl(req, res, params, splats) {
     // Bail gracefully on video errors.
     video.on('error', function(err) {
       errorResponse(res, err, "video messed up");
-    });
-
-    // Bail gracefully on player errors.
-    player.on('error', function(err) {
-      errorResponse(res, err, "player messed up");
-    });
-
-    player.on('end', function() {
-      // TODO: do something meaningful?
     });
   });
 }
