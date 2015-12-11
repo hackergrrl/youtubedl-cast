@@ -12,7 +12,7 @@ router.addRoute("/play/:url", playUrl);
 router.addRoute("/*", fourOhFour);
 
 // Parse optional port arg.
-var port = (process.argv.length > 2) ? process.argv[2] : 8000;
+var port = (process.argv.length > 2) ? process.argv[2] : 9100;
 
 // Create server + setup router
 http.createServer(function(req, res) {

@@ -26,7 +26,7 @@ $ youtubedl-cast
 Paste the following bookmarklet verbatim as a new bookmark in your browser of choice:
 
 ```
-javascript:var SERVER="http://localhost:8000";var request = new XMLHttpRequest(); var url = encodeURIComponent(location.href); request.open("GET", SERVER+"/play/"+url, true); request.onreadystatechange = function() { var done = 4, ok = 200; if (request.readyState == done && request.status == ok) { if (request.responseText) { alert(request.responseText); } } }; request.send(null);
+javascript:var SERVER="http://localhost:9100";var request = new XMLHttpRequest(); var url = encodeURIComponent(location.href); request.open("GET", SERVER+"/play/"+url, true); request.onreadystatechange = function() { var done = 4, ok = 200; if (request.readyState == done && request.status == ok) { if (request.responseText) { alert(request.responseText); } } }; request.send(null);
 ```
 
 Don't forget to replace the value of `SERVER` with the IP:port tuple of your choosing.
