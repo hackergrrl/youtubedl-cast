@@ -5,7 +5,7 @@
   "main": "index.js",
   "bin": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard"
   },
   "repository": "https://github.com/noffle/youtubedl-media-server.git",
   "homepage": "https://github.com/noffle/youtubedl-media-server",
@@ -19,5 +19,8 @@
     "routes": "~1.2.0",
     "tmp": "0.0.24",
     "ytdl-core": "^0.7.8"
+  },
+  "devDependencies": {
+    "standard": "^5.4.1"
   }
 }
