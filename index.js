@@ -6,7 +6,7 @@ var mplayer = require('node-mplayer');
 var omxplayer = require('omx-controller');
 var routes = require('routes');
 var tmp = require('tmp');
-var youtubedl = require('youtube-dl');
+var youtubedl = require('ytdl-core')
 
 // Routes
 var router = routes();
@@ -58,7 +58,7 @@ function playUrl(req, res, params, splats) {
 
     // Start downloading the video and piping it into the FIFO.
     console.error("Starting to download " + params.url);
-    var video = youtubedl(params.url, ['-f', 'best'], {});
+    var video = youtubedl(params.url)
     video.pipe(fifo);
 
     video.on('info', function(info) {
