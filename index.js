@@ -1,5 +1,6 @@
 var fs = require('fs');
 var http = require('http');
+var https = require('https');
 var mkfifo = require('mkfifo').mkfifoSync;
 var mplayer = require('node-mplayer');
 var routes = require('routes');
@@ -14,8 +15,13 @@ router.addRoute("/*", fourOhFour);
 // Parse optional port arg.
 var port = (process.argv.length > 2) ? process.argv[2] : 9100;
 
+var options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+}
+
 // Create server + setup router
-http.createServer(function(req, res) {
+https.createServer(options, function(req, res) {
   var route = router.match(req.url);
   if (route) {
     route.fn.apply(null, [req, res, route.params, route.splats]);
