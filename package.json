@@ -13,10 +13,10 @@
   "author": "Stephen Whitmore",
   "license": "BSD",
   "dependencies": {
-    "mkfifo": "0.0.1",
+    "mkfifo": "0.1.4",
     "node-mplayer": "0.0.3",
     "routes": "~1.2.0",
     "tmp": "0.0.24",
-    "youtube-dl": "~1.5.16"
+    "youtube-dl": "^1.10.5"
   }
 }
