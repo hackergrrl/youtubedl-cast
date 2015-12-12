@@ -10,11 +10,13 @@ var youtubedl = require('ytdl-core')
 // Routes
 var router = routes()
 router.addRoute('/play/:url', playUrl)
+router.addRoute('/stream', playStream)
 router.addRoute('/*', fourOhFour)
 
 // Parse optional port arg.
 var port = (process.argv.length > 2) ? process.argv[2] : 9100
 
+// https server options
 var options = {
   key: fs.readFileSync('key.pem'),
   cert: fs.readFileSync('cert.pem')
@@ -35,6 +37,60 @@ function errorResponse (res, err, msg) {
   }
   console.error(err)
 }
+
+// /stream
+function playStream (req, res) {
+  console.log('hier')
+  // Generate a unique tempfile name
+  tmp.tmpName(function (err, fifoName) {
+    if (err) {
+      errorResponse(res, err, 'tmp messed up')
+    }
+
+    // Create a temporary FIFO to feed video data into. This is necessary
+    // because some players (e.g. omxplayer) don't support input from stdin.
+    try {
+      mkfifo(fifoName, parseInt('0755', 8))
+    } catch (e) {
+      errorResponse(res, e, 'mkfifo messed up')
+    }
+    console.error('Created fifo: ' + fifoName)
+    var fifo = fs.createWriteStream(fifoName)
+    console.log(fifoName)
+
+    // Start downloading the stream and piping it into the FIFO.
+    req.pipe(fifo)
+
+    console.error('Starting to receive stream')
+
+    // Have the player start playing from the FIFO.
+    // TODO: abstract-media-player?
+    var player = new Mplayer(fifoName)
+    // var player = new Omxplayer(fifoName)
+    player.play()
+
+    // Bail gracefully on player errors.
+    player.on('error', function (err) {
+      errorResponse(res, err, 'player messed up')
+    })
+
+    player.on('end', function () {
+      // TODO: do something meaningful?
+      console.error('player ended')
+    })
+
+    // Bail gracefully on FIFO errors.
+    fifo.on('error', function (err) {
+      if (err.code === 'EPIPE') {
+        // This is perfectly normal: the player was likely killed.
+        console.error('player killed')
+      } else {
+        errorResponse(res, err, 'fifo messed up')
+      }
+    })
+  })
+}
+
 
 // /play/:url route
 function playUrl (req, res, params, splats) {
